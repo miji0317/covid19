@@ -2,8 +2,8 @@
 from django.shortcuts import render
 from datetime import datetime
 import pandas as pd
-import arrow  # 날짜 포맷팅
-import json   # json 형태로 데이터를 주고받음
+import arrow
+import json
 
 
 def home(request):
@@ -14,10 +14,10 @@ def home(request):
 
 def load_data():
     # Section 2 - 데이터 적재 및 특정 국가 데이터 선별
-    df = pd.read_csv(  # df라는 데이터프레임에 담아서
+    df = pd.read_csv(
         'https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv',
         parse_dates=['Date'])
-    return df  # df 반환
+    return df
 
 
 def select_countries(df):
@@ -65,7 +65,7 @@ def read_population(countries):
 
 
 def per_capita(covid, populations):
-    # Section 5 - 백만명당 비율 계산
+    # Section 5 - 십만명당 비율 계산
     percapita = covid.copy()
     for country in list(percapita.columns):
         percapita[country] = (percapita[country] / populations[country] * 1000000).round(2)
@@ -78,7 +78,7 @@ def make_my_data(percapita):
         my_series = list()
         for d in percapita.index.tolist():
             my_series.append(
-                [arrow.get(d.year, d.month, d.day).timestamp * 10000, round(percapita.loc[d][country], 1)])
+                [arrow.get(d.year, d.month, d.day).timestamp * 1000, round(percapita.loc[d][country], 1)])
         my_dict = dict()
         my_dict['country'] = country
         my_dict['series'] = my_series
@@ -95,15 +95,16 @@ def make_chart(my_data):
     # Section 6 - highchart
     chart = {
         'chart': {
-            'type': 'spline',  # 꺾은 선 차트
-            'borderColor': '#9DB0AC',  # 경계선 색상
-            'borderWidth': 3,  # 경계선 폭
+            'type': 'spline',
+            'borderColor': '#9DB0AC',
+            'borderWidth': 3,
         },
         'title': {'text': '인구 대비 COVID-19 확진자 비율'},
         'subtitle': {'text': 'Source: Johns Hopkins University Center for Systems Science and Engineering'},
-        'xAxis': {'type': 'datetime', 'dateTimeLabelFormats': {'month': '%b\'%d'} # x축
+        'xAxis': {'type': 'datetime',
+                  # 'dateTimeLabelFormats': {'month': '%b \'%y'}
         },
-        'yAxis': [{  # Primary yAxis  # y
+        'yAxis': [{  # Primary yAxis
             'labels': {
                 'format': '{value} 건/백만 명',
                 'style': {'color': 'blue'}
@@ -138,8 +139,8 @@ def make_chart(my_data):
 
 
 def my_converter(o):
-    if isinstance(o, datetime):  # 매개변수 o가 날짜형이면
-        return o.__str__()  # 문자열로 변환
+    if isinstance(o, datetime):
+        return o.__str__()
 
 
 def covid_dump():  # 10개의 함수 호출
