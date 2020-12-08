@@ -65,7 +65,7 @@ def read_population(countries):
 
 
 def per_capita(covid, populations):
-    # Section 5 - 십만명당 비율 계산
+    # Section 5 - 백만명당 비율 계산
     percapita = covid.copy()
     for country in list(percapita.columns):
         percapita[country] = (percapita[country] / populations[country] * 1000000).round(2)
