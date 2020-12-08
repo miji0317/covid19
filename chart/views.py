@@ -65,10 +65,10 @@ def read_population(countries):
 
 
 def per_capita(covid, populations):
-    # Section 5 - 십만명당 비율 계산
+    # Section 5 - 백만명당 비율 계산
     percapita = covid.copy()
     for country in list(percapita.columns):
-        percapita[country] = (percapita[country] / populations[country] * 100000).round(2)
+        percapita[country] = (percapita[country] / populations[country] * 1000000).round(2)
     return percapita
 
 
@@ -106,7 +106,7 @@ def make_chart(my_data):
         },
         'yAxis': [{  # Primary yAxis  # y축
             'labels': {
-                'format': '{value} 건/십만 명',
+                'format': '{value} 건/백만 명',
                 'style': {'color': 'blue'}
             }, 'title': {
                 'text': '누적 비율',
