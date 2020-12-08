@@ -78,7 +78,7 @@ def make_my_data(percapita):
         my_series = list()
         for d in percapita.index.tolist():
             my_series.append(
-                [arrow.get(d.year, d.month, d.day).timestamp * 1000, round(percapita.loc[d][country], 1)])
+                [arrow.get(d.year, d.month, d.day).timestamp * 10000, round(percapita.loc[d][country], 1)])
         my_dict = dict()
         my_dict['country'] = country
         my_dict['series'] = my_series
@@ -101,10 +101,9 @@ def make_chart(my_data):
         },
         'title': {'text': '인구 대비 COVID-19 확진자 비율'},
         'subtitle': {'text': 'Source: Johns Hopkins University Center for Systems Science and Engineering'},
-        'xAxis': {'type': 'datetime',  # x축
-                  # 'dateTimeLabelFormats': {'month': '%b \'%y'}
+        'xAxis': {'type': 'datetime', 'dateTimeLabelFormats': {'month': '%b\'%d'} # x축
         },
-        'yAxis': [{  # Primary yAxis  # y축
+        'yAxis': [{  # Primary yAxis  # y
             'labels': {
                 'format': '{value} 건/백만 명',
                 'style': {'color': 'blue'}
